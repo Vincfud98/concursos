@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Concursos Públicos - Análise Comercial</title>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #3182ce;
+            --urgent-color: #e53e3e;
+            --upcoming-color: #38a169;
+            --completed-color: #a0aec0;
+            --light-bg: #f7fafc;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .instructions {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent-color);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        select, button {
+            padding: 12px 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .export-btn {
+            background-color: var(--urgent-color);
+        }
+        
+        .export-btn:hover {
+            background-color: #c53030;
+        }
+        
+        .report-section, .concursos-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .concurso-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .concurso-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .concurso-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .concurso-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .concurso-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-urgent {
+            background-color: rgba(229, 62, 62, 0.1);
+            color: var(--urgent-color);
+            border: 1px solid rgba(229, 62, 62, 0.3);
+        }
+        
+        .badge-upcoming {
+            background-color: rgba(56, 161, 105, 0.1);
+            color: var(--upcoming-color);
+            border: 1px solid rgba(56, 161, 105, 0.3);
+        }
+        
+        .badge-completed {
+            background-color: rgba(160, 174, 192, 0.1);
+            color: var(--completed-color);
+            border: 1px solid rgba(160, 174, 192, 0.3);
+        }
+        
+        .concurso-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+        }
+        
+        .completed {
+            opacity: 0.7;
+        }
+        
+        .completed .concurso-title {
+            color: var(--completed-color);
+        }
+        
+        .report-content {
+            margin-top: 20px;
+        }
+        
+        .report-section h2 {
+            margin-top: 0;
+        }
+        
+        .report-paragraph {
+            margin-bottom: 20px;
+        }
+        
+        .priority-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .priority-list li {
+            margin-bottom: 10px;
+        }
+        
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .suggestion-card {
+            background-color: rgba(49, 130, 206, 0.05);
+            border: 1px solid rgba(49, 130, 206, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .suggestion-card h4 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        
+        .conclusion {
+            background-color: rgba(26, 54, 93, 0.05);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #718096;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .concurso-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .suggestions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Relatório de Concursos Públicos</h1>
+        <p>Análise comercial para orientação de marketing e produção de cursos</p>
+        <p>Atualizado em: 02/12/2025</p>
+    </header>
+    
+    <div class="container">
+        <section class="instructions">
+            <h3>📋 Instruções para Atualização dos Dados</h3>
+            <p>Para atualizar as informações desta página, edite diretamente o código HTML na seção de dados. Atualize:</p>
+            <ol>
+                <li>Status dos concursos no array <code>concursosData</code></li>
+                <li>Previsões de edital conforme novas informações</li>
+                <li>Adicione novos concursos seguindo a mesma estrutura</li>
+                <li>Atualize o relatório comercial conforme necessário</li>
+            </ol>
+        </section>
+        
+        <div class="controls">
+            <div class="filters">
+                <select id="statusFilter">
+                    <option value="all">Todos os Status</option>
+                    <option value="urgent">Edital Próximo</option>
+                    <option value="upcoming">Previsão de Edital</option>
+                    <option value="completed">Realizados/Encerrados</option>
+                </select>
+                <select id="levelFilter">
+                    <option value="all">Todos os Níveis</option>
+                    <option value="federal">Federal</option>
+                    <option value="estadual">Estadual</option>
+                    <option value="municipal">Municipal</option>
+                </select>
+            </div>
+            
+            <button id="exportBtn" class="export-btn">
+                <span>📄</span> Exportar para PDF
+            </button>
+        </div>
+        
+        <section class="report-section" id="report">
+            <h2>📊 RELATÓRIO COMERCIAL - CONCURSOS PÚBLICOS</h2>
+            
+            <div class="report-content">
+                <div class="report-paragraph">
+                    <h3>Panorama Geral dos Concursos</h3>
+                    <p>O mercado atual de concursos públicos apresenta diversas oportunidades imediatas e outras planejadas para 2026. Identificamos 9 concursos com edital para sair ainda em dezembro/2025 e 7 com previsão para o primeiro semestre de 2026, criando uma janela importante para desenvolvimento e venda de cursos preparatórios. As áreas mais ativas são Tribunais de Contas, Fazendas Estaduais e Tribunais de Justiça, com destaque para as regiões Nordeste e Centro-Oeste. Concursos federais, embora menos numerosos, atraem candidatos de todo o país.</p>
+                </div>
+                
+                <div class="report-paragraph">
+                    <h3>Concursos com Edital Próximo (Prioridade Comercial)</h3>
+                    <ul class="priority-list">
+                        <li><strong>SEFAZ/DF - Auditor Fiscal (Brasília/DF):</strong> Edital previsto até 10/12/2025. Grande interesse nacional, salário atrativo e banca definida (Cebraspe).</li>
+                        <li><strong>TCE/RN (Natal/RN):</strong> Banca contratada e edital para sair em dezembro/2025. Tribunal de Contas com orçamento estável.</li>
+                        <li><strong>PRODERJ - TI (Rio de Janeiro/RJ):</strong> Banca contratada e edital próximo. Área de TI com procura crescente e remuneração competitiva.</li>
+                        <li><strong>TCU - Auditor (Brasília/DF):</strong> Inscrições abertas até 03/12. Concurso federal de alto prestígio com provas em fevereiro/2026.</li>
+                    </ul>
+                </div>
+                
+                <div class="report-paragraph">
+                    <h3>Concursos Realizados/Em Andamento</h3>
+                    <p>Vários concursos estão em fase avançada (inscrições encerradas ou provas realizadas), como TJ/MS, TJ/RJ, TJSP e UFRGS. Embora não sejam prioridade para criação de novos cursos, oferecem chances para:</p>
+                    <ul class="priority-list">
+                        <li>Venda de materiais de revisão e cursos intensivos</li>
+                        <li>Manutenção do contato com alunos para próximas etapas</li>
+                        <li>Avaliação de resultados para ajustes em cursos futuros</li>
+                    </ul>
+                </div>
+                
+                <div class="report-paragraph">
+                    <h3>Sugestões para a Empresa</h3>
+                    <div class="suggestions-grid">
+                        <div class="suggestion-card">
+                            <h4>🎯 Cursos a Serem Criados</h4>
+                            <p>Priorizar cursos para SEFAZ/DF (Auditor Fiscal), TCE/RN e PRODERJ (TI). Desenvolver material específico para banca Cebraspe, que aparece em vários concursos de grande procura.</p>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h4>💰 Oportunidades de Pré-venda</h4>
+                            <p>Oferecer pré-vendas com desconto para SEFAZ/BA (edital 2026), SEFAZ/PA e TJ/BA. Criar pacotes combinados para concursos de Tribunais de Contas estaduais.</p>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h4>⚙️ Necessidades de Produção</h4>
+                            <p>Concentrar esforços em videoaulas e materiais impressos para concursos com edital até março/2026. Priorizar produção modular para reutilização em concursos similares.</p>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h4>⏱️ Prazos Sugeridos</h4>
+                            <p>Lançamento de cursos para concursos de dezembro até 05/12. Cursos para concursos de janeiro/fevereiro até 20/12. Planejamento para 2026 concluído até 15/01.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="conclusion">
+                    <h3>Resumo Comercial</h3>
+                    <p>O final de 2025 e início de 2026 apresentam oportunidades comerciais importantes no mercado de concursos públicos. A concentração de editais para sair em breve (especialmente SEFAZ/DF, TCE/RN e PRODERJ) requer atenção imediata no desenvolvimento e promoção de cursos específicos. A oferta de pré-venda para concursos de 2026 deve começar ainda em dezembro para atrair candidatos durante o período de organização dos estudos.</p>
+                    <p>Sugere-se direcionar recursos de produção para atender à demanda imediata, com foco em concursos de Tribunais e Fazendas que apresentam maior atratividade financeira e volume de candidatos. O aproveitamento de sinergias entre cursos para bancas similares (Cebraspe, IBFC) pode otimizar custos e acelerar lançamentos, aumentando o retorno sobre investimento em desenvolvimento de conteúdo.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="concursos-section">
+            <h2>📋 LISTAGEM DE CONCURSOS</h2>
+            <p>Filtre por status ou nível para visualizar concursos específicos</p>
+            
+            <div id="concursosContainer">
+                <!-- Os concursos serão renderizados aqui via JavaScript -->
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Relatório gerado em 02/12/2025 | Empresa de Cursos para Concursos Públicos</p>
+        <p>Dados atualizados conforme informações disponíveis até a data de publicação</p>
+    </footer>
+    
+    <script>
+        // Dados dos concursos - estrutura para fácil atualização
+        const concursosData = [
+            // Norte
+            {
+                id: 1,
+                nome: "SEFA/PA (Fazenda Estadual)",
+                orgao: "Fazenda Estadual - Belém/PA",
+                status: "upcoming",
+                previsaoEdital: "25/11/2025 (publicado)",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Norte",
+                banca: "Contratada",
+                destaque: "Contrato de banca assinado"
+            },
+            {
+                id: 2,
+                nome: "ISS Manaus",
+                orgao: "Prefeitura de Manaus/AM",
+                status: "upcoming",
+                previsaoEdital: "11/11/2025 (publicado)",
+                ultimoEdital: "N/A",
+                nivel: "Municipal",
+                vagas: "A definir",
+                regiao: "Norte",
+                banca: "Comissão Especial Formada",
+                destaque: "Processo em andamento"
+            },
+            {
+                id: 3,
+                nome: "ISS Porto Velho (Auditor do Tesouro)",
+                orgao: "Prefeitura de Porto Velho/RO",
+                status: "upcoming",
+                previsaoEdital: "Primeiro semestre de 2026",
+                ultimoEdital: "N/A",
+                nivel: "Municipal",
+                vagas: "A definir",
+                regiao: "Norte",
+                banca: "Em definição",
+                destaque: "Banca em definição"
+            },
+            {
+                id: 4,
+                nome: "TCE/AP",
+                orgao: "Tribunal de Contas do Estado - Macapá/AP",
+                status: "upcoming",
+                previsaoEdital: "Sem previsão definida",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Norte",
+                banca: "Em fase de estudos",
+                destaque: "Necessita alteração legislativa"
+            },
+            // Nordeste
+            {
+                id: 5,
+                nome: "SEFAZ/BA",
+                orgao: "Fazenda Estadual - Salvador/BA",
+                status: "upcoming",
+                previsaoEdital: "2026 / Nomeações em 2027",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Nordeste",
+                banca: "Aguardando autorização",
+                destaque: "Anunciado, aguardando oficialização"
+            },
+            {
+                id: 6,
+                nome: "TJ/BA",
+                orgao: "Tribunal de Justiça - Salvador/BA",
+                status: "upcoming",
+                previsaoEdital: "Sem previsão definida",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Nordeste",
+                banca: "Aguardando formação de comissão",
+                destaque: "Orçamento aprovado"
+            },
+            {
+                id: 7,
+                nome: "TJ/PB",
+                orgao: "Tribunal de Justiça - João Pessoa/PB",
+                status: "upcoming",
+                previsaoEdital: "1º semestre de 2026",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Nordeste",
+                banca: "Em estudos técnicos",
+                destaque: "Previsão otimista"
+            },
+            {
+                id: 8,
+                nome: "TCE/RN",
+                orgao: "Tribunal de Contas do Estado - Natal/RN",
+                status: "urgent",
+                previsaoEdital: "Dezembro/2025",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Nordeste",
+                banca: "Contratada",
+                destaque: "Edital para sair em breve"
+            },
+            {
+                id: 9,
+                nome: "TCE/PB",
+                orgao: "Tribunal de Contas do Estado - João Pessoa/PB",
+                status: "upcoming",
+                previsaoEdital: "Sem previsão definida",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Nordeste",
+                banca: "Comissão formada",
+                destaque: "Fase de estudos"
+            },
+            // Centro-Oeste
+            {
+                id: 10,
+                nome: "TJ/MS",
+                orgao: "Tribunal de Justiça - Campo Grande/MS",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Centro-Oeste",
+                banca: "Definida",
+                destaque: "Provas em janeiro/2026"
+            },
+            {
+                id: 11,
+                nome: "TJ/GO",
+                orgao: "Tribunal de Justiça - Goiânia/GO",
+                status: "upcoming",
+                previsaoEdital: "2026",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Centro-Oeste",
+                banca: "Aguardando",
+                destaque: "Previsto na LDO de 2026"
+            },
+            {
+                id: 12,
+                nome: "SEFAZ/DF - Auditor Fiscal",
+                orgao: "Fazenda Distrital - Brasília/DF",
+                status: "urgent",
+                previsaoEdital: "Até 10/12/2025",
+                ultimoEdital: "N/A",
+                nivel: "Distrital",
+                vagas: "A definir",
+                regiao: "Centro-Oeste",
+                banca: "Contratada (Cebraspe)",
+                destaque: "MAIOR PRIORIDADE"
+            },
+            {
+                id: 13,
+                nome: "TCU - Auditor",
+                orgao: "Tribunal de Contas da União - Brasília/DF",
+                status: "urgent",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Federal",
+                vagas: "A definir",
+                regiao: "Centro-Oeste",
+                banca: "Cebraspe",
+                destaque: "Inscrições até 03/12"
+            },
+            {
+                id: 14,
+                nome: "STF - Servidores",
+                orgao: "Supremo Tribunal Federal - Brasília/DF",
+                status: "upcoming",
+                previsaoEdital: "Sem previsão definida",
+                ultimoEdital: "N/A",
+                nivel: "Federal",
+                vagas: "A definir",
+                regiao: "Centro-Oeste",
+                banca: "A definir",
+                destaque: "Risco de aproveitamento de listas"
+            },
+            {
+                id: 15,
+                nome: "SEDF - Professor",
+                orgao: "Secretaria de Educação - Distrito Federal",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Distrital",
+                vagas: "A definir",
+                regiao: "Centro-Oeste",
+                banca: "Definida",
+                destaque: "Resultado definitivo divulgado"
+            },
+            // Sudeste
+            {
+                id: 16,
+                nome: "TJ/RJ",
+                orgao: "Tribunal de Justiça - Rio de Janeiro/RJ",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Definida",
+                destaque: "Provas em fevereiro/2026"
+            },
+            {
+                id: 17,
+                nome: "PRODERJ - TI",
+                orgao: "Empresa de Tecnologia - Rio de Janeiro/RJ",
+                status: "urgent",
+                previsaoEdital: "Para sair em breve",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Contratada",
+                destaque: "Edital próximo"
+            },
+            {
+                id: 18,
+                nome: "TCE/RJ",
+                orgao: "Tribunal de Contas do Estado - Rio de Janeiro/RJ",
+                status: "upcoming",
+                previsaoEdital: "Sem previsão definida",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Em definição",
+                destaque: "Contrato rescindido, processo reiniciado"
+            },
+            {
+                id: 19,
+                nome: "TCM/RJ",
+                orgao: "Tribunal de Contas do Município - Rio de Janeiro/RJ",
+                status: "upcoming",
+                previsaoEdital: "Sem previsão definida",
+                ultimoEdital: "N/A",
+                nivel: "Municipal",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Aguardando",
+                destaque: "Aguardando aprovação da nova lei de cargos"
+            },
+            {
+                id: 20,
+                nome: "CVM",
+                orgao: "Comissão de Valores Mobiliários - Nacional",
+                status: "upcoming",
+                previsaoEdital: "Primeira fase",
+                ultimoEdital: "N/A",
+                nivel: "Federal",
+                vagas: "A definir",
+                regiao: "Nacional",
+                banca: "Aguardando",
+                destaque: "Aguardando autorização federal"
+            },
+            {
+                id: 21,
+                nome: "TJSP - Escrevente",
+                orgao: "Tribunal de Justiça - São Paulo/SP",
+                status: "urgent",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Definida",
+                destaque: "Prova em 07/12/2025"
+            },
+            {
+                id: 22,
+                nome: "TJSP - Contador",
+                orgao: "Tribunal de Justiça - São Paulo/SP",
+                status: "urgent",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Definida",
+                destaque: "Prova em 14/12/2025"
+            },
+            {
+                id: 23,
+                nome: "UFSJ - TAE",
+                orgao: "Universidade Federal - São João del-Rei/MG",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Federal",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Definida",
+                destaque: "Prova realizada em 02/11"
+            },
+            {
+                id: 24,
+                nome: "UEMG - Técnicos/Analistas",
+                orgao: "Universidade Estadual - MG (diversos campi)",
+                status: "urgent",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Estadual",
+                vagas: "2 vagas (editais 71 e 72/2025)",
+                regiao: "Sudeste",
+                banca: "Definida",
+                destaque: "Inscrições abertas a partir de 03/12"
+            },
+            {
+                id: 25,
+                nome: "Prefeitura de Sorocaba",
+                orgao: "Município de Sorocaba/SP",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Municipal",
+                vagas: "A definir",
+                regiao: "Sudeste",
+                banca: "Definida",
+                destaque: "Próxima fase: prova objetiva"
+            },
+            // Sul
+            {
+                id: 26,
+                nome: "TCE/SC",
+                orgao: "Tribunal de Contas do Estado - Florianópolis/SC",
+                status: "urgent",
+                previsaoEdital: "Até janeiro/2026",
+                ultimoEdital: "N/A",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sul",
+                banca: "Em definição",
+                destaque: "Edital até janeiro/2026"
+            },
+            {
+                id: 27,
+                nome: "UFRGS - TAE",
+                orgao: "Universidade Federal - Porto Alegre/RS",
+                status: "upcoming",
+                previsaoEdital: "Fevereiro/2026",
+                ultimoEdital: "N/A",
+                nivel: "Federal",
+                vagas: "A definir",
+                regiao: "Sul",
+                banca: "A definir",
+                destaque: "Inscrições reabrem em fevereiro/2026"
+            },
+            {
+                id: 28,
+                nome: "TJRS - Servidores",
+                orgao: "Tribunal de Justiça - RS (múltiplas comarcas)",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Estadual",
+                vagas: "A definir",
+                regiao: "Sul",
+                banca: "Definida",
+                destaque: "Prova em 30/11"
+            },
+            {
+                id: 29,
+                nome: "UTFPR - TAE",
+                orgao: "Universidade Federal - Paraná (múltiplos campi)",
+                status: "completed",
+                previsaoEdital: "Publicado",
+                ultimoEdital: "2025",
+                nivel: "Federal",
+                vagas: "A definir",
+                regiao: "Sul",
+                banca: "Definida",
+                destaque: "Resultado definitivo em 08/12"
+            }
+        ];
+
+        // Função para renderizar os concursos
+        function renderConcursos(filteredConcursos) {
+            const container = document.getElementById('concursosContainer');
+            container.innerHTML = '';
+            
+            if (filteredConcursos.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #718096;">Nenhum concurso encontrado com os filtros selecionados.</p>';
+                return;
+            }
+            
+            // Agrupar por região
+            const concursosPorRegiao = {};
+            filteredConcursos.forEach(concurso => {
+                if (!concursosPorRegiao[concurso.regiao]) {
+                    concursosPorRegiao[concurso.regiao] = [];
+                }
+                concursosPorRegiao[concurso.regiao].push(concurso);
+            });
+            
+            // Renderizar por região
+            for (const regiao in concursosPorRegiao) {
+                const regiaoHeader = document.createElement('h3');
+                regiaoHeader.textContent = `Região ${regiao}`;
+                regiaoHeader.style.marginTop = '30px';
+                regiaoHeader.style.marginBottom = '15px';
+                container.appendChild(regiaoHeader);
+                
+                concursosPorRegiao[regiao].forEach(concurso => {
+                    const card = document.createElement('div');
+                    card.className = `concurso-card ${concurso.status === 'completed' ? 'completed' : ''}`;
+                    
+                    let badgeText = '';
+                    let badgeClass = '';
+                    
+                    if (concurso.status === 'urgent') {
+                        badgeText = 'EDITAL PRÓXIMO';
+                        badgeClass = 'badge-urgent';
+                    } else if (concurso.status === 'upcoming') {
+                        badgeText = 'PREVISÃO DE EDITAL';
+                        badgeClass = 'badge-upcoming';
+                    } else {
+                        badgeText = 'REALIZADO/ENCERRADO';
+                        badgeClass = 'badge-completed';
+                    }
+                    
+                    card.innerHTML = `
+                        <div class="concurso-header">
+                            <div class="concurso-title">${concurso.nome}</div>
+                            <div class="concurso-badge ${badgeClass}">${badgeText}</div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Órgão / Localidade</span>
+                            <span class="detail-value">${concurso.orgao}</span>
+                        </div>
+                        <div class="concurso-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Status</span>
+                                <span class="detail-value">${concurso.banca}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Previsão de Edital</span>
+                                <span class="detail-value">${concurso.previsaoEdital}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Último Edital</span>
+                                <span class="detail-value">${concurso.ultimoEdital}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Nível</span>
+                                <span class="detail-value">${concurso.nivel}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Vagas</span>
+                                <span class="detail-value">${concurso.vagas}</span>
+                            </div>
+                        </div>
+                        <div class="detail-item" style="margin-top: 15px;">
+                            <span class="detail-label">Destaque / Observação</span>
+                            <span class="detail-value">${concurso.destaque}</span>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            }
+        }
+        
+        // Função para filtrar concursos
+        function filterConcursos() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const levelFilter = document.getElementById('levelFilter').value;
+            
+            let filtered = concursosData;
+            
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(concurso => concurso.status === statusFilter);
+            }
+            
+            if (levelFilter !== 'all') {
+                filtered = filtered.filter(concurso => {
+                    if (levelFilter === 'federal') return concurso.nivel === 'Federal';
+                    if (levelFilter === 'estadual') return concurso.nivel === 'Estadual' || concurso.nivel === 'Distrital';
+                    if (levelFilter === 'municipal') return concurso.nivel === 'Municipal';
+                    return true;
+                });
+            }
+            
+            renderConcursos(filtered);
+        }
+        
+        // Função para exportar para PDF
+        function exportToPDF() {
+            const element = document.body;
+            const originalStyles = element.style.cssText;
+            
+            // Estilos para impressão
+            element.style.width = '210mm';
+            element.style.margin = '0 auto';
+            element.style.padding = '20px';
+            element.style.boxShadow = 'none';
+            
+            // Esconder botões e filtros durante a impressão
+            document.querySelector('.controls').style.display = 'none';
+            
+            // Aplicar estilos de impressão
+            const printStyles = `
+                <style>
+                    @media print {
+                        body {
+                            font-size: 12pt;
+                            line-height: 1.5;
+                            color: #000;
+                        }
+                        .concurso-card {
+                            break-inside: avoid;
+                            page-break-inside: avoid;
+                        }
+                        button, .controls, .instructions {
+                            display: none !important;
+                        }
+                        header {
+                            background: #1a365d !important;
+                            -webkit-print-color-adjust: exact;
+                            color: white !important;
+                        }
+                        .badge-urgent {
+                            background-color: rgba(229, 62, 62, 0.1) !important;
+                            -webkit-print-color-adjust: exact;
+                        }
+                        .badge-upcoming {
+                            background-color: rgba(56, 161, 105, 0.1) !important;
+                            -webkit-print-color-adjust: exact;
+                        }
+                        .conclusion {
+                            background-color: rgba(26, 54, 93, 0.05) !important;
+                            -webkit-print-color-adjust: exact;
+                        }
+                    }
+                </style>
+            `;
+            
+            document.head.insertAdjacentHTML('beforeend', printStyles);
+            
+            // Imprimir a página
+            window.print();
+            
+            // Restaurar estilos originais
+            setTimeout(() => {
+                element.style.cssText = originalStyles;
+                document.querySelector('.controls').style.display = 'flex';
+                // Remover estilos de impressão
+                const printStyleEl = document.querySelector('style[media="print"]');
+                if (printStyleEl) printStyleEl.remove();
+            }, 100);
+        }
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Renderizar todos os concursos inicialmente
+            renderConcursos(concursosData);
+            
+            // Adicionar event listeners aos filtros
+            document.getElementById('statusFilter').addEventListener('change', filterConcursos);
+            document.getElementById('levelFilter').addEventListener('change', filterConcursos);
+            
+            // Adicionar event listener ao botão de exportar PDF
+            document.getElementById('exportBtn').addEventListener('click', exportToPDF);
+        });
+    </script>
+</body>
+</html>
