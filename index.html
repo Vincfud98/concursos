@@ -207,6 +207,27 @@
             font-weight: 600;
         }
         
+        .link-item {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+        }
+        
+        .concurso-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+        
+        .concurso-link:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        
         .completed {
             opacity: 0.7;
         }
@@ -331,7 +352,7 @@
                 <div class="report-paragraph">
                     <h3>Concursos com Edital Próximo (Prioridade Comercial)</h3>
                     <ul class="priority-list">
-                        <li><strong>SEFAZ/DF - Auditor Fiscal (Brasília/DF):</strong> Edital previsto até 10/12/2025. Grande interesse nacional, salário atrativo e banca definida (Cebraspe).</li>
+                        <li><strong>SEFAZ/DF - Auditor Fiscal (Brasília/DF):</strong> Edital previsto até 10/12/2025. Grande interesse nacional, salário atrativo e banca definida (Cebraspe). <a href="file:///C:/Users/Pichau/Downloads/SEI_185634821_Ato_Autorizativo+(1).pdf" target="_blank" class="concurso-link">↗ Ver documento oficial</a></li>
                         <li><strong>TCE/RN (Natal/RN):</strong> Banca contratada e edital para sair em dezembro/2025. Tribunal de Contas com orçamento estável.</li>
                         <li><strong>PRODERJ - TI (Rio de Janeiro/RJ):</strong> Banca contratada e edital próximo. Área de TI com procura crescente e remuneração competitiva.</li>
                         <li><strong>TCU - Auditor (Brasília/DF):</strong> Inscrições abertas até 03/12. Concurso federal de alto prestígio com provas em fevereiro/2026.</li>
@@ -372,14 +393,6 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="conclusion">
-                    <h3>Resumo Comercial</h3>
-                    <p>O final de 2025 e início de 2026 apresentam oportunidades comerciais importantes no mercado de concursos públicos. A concentração de editais para sair em breve (especialmente SEFAZ/DF, TCE/RN e PRODERJ) requer atenção imediata no desenvolvimento e promoção de cursos específicos. A oferta de pré-venda para concursos de 2026 deve começar ainda em dezembro para atrair candidatos durante o período de organização dos estudos.</p>
-                    <p>Sugere-se direcionar recursos de produção para atender à demanda imediata, com foco em concursos de Tribunais e Fazendas que apresentam maior atratividade financeira e volume de candidatos. O aproveitamento de sinergias entre cursos para bancas similares (Cebraspe, IBFC) pode otimizar custos e acelerar lançamentos, aumentando o retorno sobre investimento em desenvolvimento de conteúdo.</p>
-                </div>
-            </div>
-        </section>
         
         <section class="concursos-section">
             <h2>📋 LISTAGEM DE CONCURSOS</h2>
@@ -411,7 +424,8 @@
                 vagas: "A definir",
                 regiao: "Norte",
                 banca: "Contratada",
-                destaque: "Contrato de banca assinado"
+                destaque: "Contrato de banca assinado",
+                link: "https://www.sefa.pa.gov.br"
             },
             {
                 id: 2,
@@ -424,7 +438,8 @@
                 vagas: "A definir",
                 regiao: "Norte",
                 banca: "Comissão Especial Formada",
-                destaque: "Processo em andamento"
+                destaque: "Processo em andamento",
+                link: "#"
             },
             {
                 id: 3,
@@ -437,7 +452,8 @@
                 vagas: "A definir",
                 regiao: "Norte",
                 banca: "Em definição",
-                destaque: "Banca em definição"
+                destaque: "Banca em definição",
+                link: "#"
             },
             {
                 id: 4,
@@ -450,7 +466,8 @@
                 vagas: "A definir",
                 regiao: "Norte",
                 banca: "Em fase de estudos",
-                destaque: "Necessita alteração legislativa"
+                destaque: "Necessita alteração legislativa",
+                link: "#"
             },
             // Nordeste
             {
@@ -464,7 +481,8 @@
                 vagas: "A definir",
                 regiao: "Nordeste",
                 banca: "Aguardando autorização",
-                destaque: "Anunciado, aguardando oficialização"
+                destaque: "Anunciado, aguardando oficialização",
+                link: "#"
             },
             {
                 id: 6,
@@ -477,7 +495,8 @@
                 vagas: "A definir",
                 regiao: "Nordeste",
                 banca: "Aguardando formação de comissão",
-                destaque: "Orçamento aprovado"
+                destaque: "Orçamento aprovado",
+                link: "#"
             },
             {
                 id: 7,
@@ -490,7 +509,8 @@
                 vagas: "A definir",
                 regiao: "Nordeste",
                 banca: "Em estudos técnicos",
-                destaque: "Previsão otimista"
+                destaque: "Previsão otimista",
+                link: "#"
             },
             {
                 id: 8,
@@ -503,7 +523,8 @@
                 vagas: "A definir",
                 regiao: "Nordeste",
                 banca: "Contratada",
-                destaque: "Edital para sair em breve"
+                destaque: "Edital para sair em breve",
+                link: "#"
             },
             {
                 id: 9,
@@ -516,7 +537,8 @@
                 vagas: "A definir",
                 regiao: "Nordeste",
                 banca: "Comissão formada",
-                destaque: "Fase de estudos"
+                destaque: "Fase de estudos",
+                link: "#"
             },
             // Centro-Oeste
             {
@@ -530,7 +552,8 @@
                 vagas: "A definir",
                 regiao: "Centro-Oeste",
                 banca: "Definida",
-                destaque: "Provas em janeiro/2026"
+                destaque: "Provas em janeiro/2026",
+                link: "#"
             },
             {
                 id: 11,
@@ -543,7 +566,8 @@
                 vagas: "A definir",
                 regiao: "Centro-Oeste",
                 banca: "Aguardando",
-                destaque: "Previsto na LDO de 2026"
+                destaque: "Previsto na LDO de 2026",
+                link: "#"
             },
             {
                 id: 12,
@@ -556,7 +580,8 @@
                 vagas: "A definir",
                 regiao: "Centro-Oeste",
                 banca: "Contratada (Cebraspe)",
-                destaque: "MAIOR PRIORIDADE"
+                destaque: "MAIOR PRIORIDADE",
+                link: "file:///C:/Users/Pichau/Downloads/SEI_185634821_Ato_Autorizativo+(1).pdf"
             },
             {
                 id: 13,
@@ -569,7 +594,8 @@
                 vagas: "A definir",
                 regiao: "Centro-Oeste",
                 banca: "Cebraspe",
-                destaque: "Inscrições até 03/12"
+                destaque: "Inscrições até 03/12",
+                link: "https://www.tcu.gov.br"
             },
             {
                 id: 14,
@@ -582,7 +608,8 @@
                 vagas: "A definir",
                 regiao: "Centro-Oeste",
                 banca: "A definir",
-                destaque: "Risco de aproveitamento de listas"
+                destaque: "Risco de aproveitamento de listas",
+                link: "#"
             },
             {
                 id: 15,
@@ -595,7 +622,8 @@
                 vagas: "A definir",
                 regiao: "Centro-Oeste",
                 banca: "Definida",
-                destaque: "Resultado definitivo divulgado"
+                destaque: "Resultado definitivo divulgado",
+                link: "#"
             },
             // Sudeste
             {
@@ -609,7 +637,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Definida",
-                destaque: "Provas em fevereiro/2026"
+                destaque: "Provas em fevereiro/2026",
+                link: "#"
             },
             {
                 id: 17,
@@ -622,7 +651,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Contratada",
-                destaque: "Edital próximo"
+                destaque: "Edital próximo",
+                link: "#"
             },
             {
                 id: 18,
@@ -635,7 +665,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Em definição",
-                destaque: "Contrato rescindido, processo reiniciado"
+                destaque: "Contrato rescindido, processo reiniciado",
+                link: "#"
             },
             {
                 id: 19,
@@ -648,7 +679,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Aguardando",
-                destaque: "Aguardando aprovação da nova lei de cargos"
+                destaque: "Aguardando aprovação da nova lei de cargos",
+                link: "#"
             },
             {
                 id: 20,
@@ -661,7 +693,8 @@
                 vagas: "A definir",
                 regiao: "Nacional",
                 banca: "Aguardando",
-                destaque: "Aguardando autorização federal"
+                destaque: "Aguardando autorização federal",
+                link: "#"
             },
             {
                 id: 21,
@@ -674,7 +707,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Definida",
-                destaque: "Prova em 07/12/2025"
+                destaque: "Prova em 07/12/2025",
+                link: "#"
             },
             {
                 id: 22,
@@ -687,7 +721,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Definida",
-                destaque: "Prova em 14/12/2025"
+                destaque: "Prova em 14/12/2025",
+                link: "#"
             },
             {
                 id: 23,
@@ -700,7 +735,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Definida",
-                destaque: "Prova realizada em 02/11"
+                destaque: "Prova realizada em 02/11",
+                link: "#"
             },
             {
                 id: 24,
@@ -713,7 +749,8 @@
                 vagas: "2 vagas (editais 71 e 72/2025)",
                 regiao: "Sudeste",
                 banca: "Definida",
-                destaque: "Inscrições abertas a partir de 03/12"
+                destaque: "Inscrições abertas a partir de 03/12",
+                link: "#"
             },
             {
                 id: 25,
@@ -726,7 +763,8 @@
                 vagas: "A definir",
                 regiao: "Sudeste",
                 banca: "Definida",
-                destaque: "Próxima fase: prova objetiva"
+                destaque: "Próxima fase: prova objetiva",
+                link: "#"
             },
             // Sul
             {
@@ -740,7 +778,8 @@
                 vagas: "A definir",
                 regiao: "Sul",
                 banca: "Em definição",
-                destaque: "Edital até janeiro/2026"
+                destaque: "Edital até janeiro/2026",
+                link: "#"
             },
             {
                 id: 27,
@@ -753,7 +792,8 @@
                 vagas: "A definir",
                 regiao: "Sul",
                 banca: "A definir",
-                destaque: "Inscrições reabrem em fevereiro/2026"
+                destaque: "Inscrições reabrem em fevereiro/2026",
+                link: "#"
             },
             {
                 id: 28,
@@ -766,7 +806,8 @@
                 vagas: "A definir",
                 regiao: "Sul",
                 banca: "Definida",
-                destaque: "Prova em 30/11"
+                destaque: "Prova em 30/11",
+                link: "#"
             },
             {
                 id: 29,
@@ -779,7 +820,8 @@
                 vagas: "A definir",
                 regiao: "Sul",
                 banca: "Definida",
-                destaque: "Resultado definitivo em 08/12"
+                destaque: "Resultado definitivo em 08/12",
+                link: "#"
             }
         ];
 
@@ -828,6 +870,15 @@
                         badgeClass = 'badge-completed';
                     }
                     
+                    // Verificar se tem link
+                    const linkHTML = concurso.link && concurso.link !== '#' 
+                        ? `<div class="link-item">
+                             <a href="${concurso.link}" target="_blank" class="concurso-link">
+                               <span>🔗</span> Acessar informações oficiais
+                             </a>
+                           </div>`
+                        : '';
+                    
                     card.innerHTML = `
                         <div class="concurso-header">
                             <div class="concurso-title">${concurso.nome}</div>
@@ -863,6 +914,7 @@
                             <span class="detail-label">Destaque / Observação</span>
                             <span class="detail-value">${concurso.destaque}</span>
                         </div>
+                        ${linkHTML}
                     `;
                     
                     container.appendChild(card);
@@ -940,6 +992,10 @@
                             background-color: rgba(26, 54, 93, 0.05) !important;
                             -webkit-print-color-adjust: exact;
                         }
+                        .concurso-link {
+                            color: #1a365d !important;
+                            text-decoration: underline !important;
+                        }
                     }
                 </style>
             `;
@@ -974,4 +1030,3 @@
     </script>
 </body>
 </html>
-
